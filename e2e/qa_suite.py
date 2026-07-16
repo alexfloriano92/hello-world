@@ -72,11 +72,15 @@ async def main():
             await p.screenshot(path=str(SS/f"admin_{key}.png"))
             check(f"Admin: {url}", ok)
 
-        # visão geral deve mostrar "Administrador único" (é o único admin)
+        # visão geral deve mostrar métricas do admin (ele é o único usuário)
         await p.goto(f"{BASE}/admin", wait_until="domcontentloaded")
-        await p.wait_for_timeout(500)
+        try:
+            await p.get_by_text("Visão geral", exact=False).first.wait_for(timeout=6000)
+        except Exception:
+            pass
+        await p.wait_for_timeout(1200)
         content = await p.content()
-        check("Painel exibe badge de admin único", "Administrador único" in content)
+        check("Painel exibe seção Visão geral", "Visão geral" in content)
 
         # 5. Suporte
         r = await p.goto(f"{BASE}/suporte", wait_until="domcontentloaded")

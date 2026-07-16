@@ -28,16 +28,11 @@ def check(name, ok, detail=""):
 
 async def login(p, email, password):
     await p.goto(f"{BASE}/auth", wait_until="domcontentloaded")
+    await p.wait_for_selector('input[type="email"]', timeout=5000)
     await p.locator('input[type="email"]').first.fill(email)
     await p.locator('input[type="password"]').first.fill(password)
-    for name in ("Entrar", "Login", "Sign in", "Acessar"):
-        try:
-            await p.get_by_role("button", name=name, exact=False).first.click(timeout=800)
-            break
-        except Exception: continue
-    else:
-        await p.locator('form button[type="submit"]').first.click()
-    await p.wait_for_function("() => !location.pathname.startsWith(\"/auth\")", timeout=10000)
+    await p.locator('button:has-text("Entrar")').first.click()
+    await p.wait_for_function("() => !location.pathname.startsWith('/auth')", timeout=15000)
 
 async def main():
     async with async_playwright() as pw:

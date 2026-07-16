@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock', '**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun run build
+      - run: bun run test:coverage
+      - name: Update coverage badge in README
+        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        run: |
+          set -e
+          if [ -f ./coverage/coverage-summary.json ]; then
+            PCT=$(node -e "const s=require('./coverage/coverage-summary.json');process.stdout.write(String(s.total.lines.pct))")
+            PCT_INT=${PCT%.*}
+            if   [ "$PCT_INT" -ge 90 ]; then COLOR=brightgreen
+            elif [ "$PCT_INT" -ge 80 ]; then COLOR=green
+            elif [ "$PCT_INT" -ge 70 ]; then COLOR=yellowgreen
+            elif [ "$PCT_INT" -ge 60 ]; then COLOR=yellow
+            elif [ "$PCT_INT" -ge 50 ]; then COLOR=orange
+            else COLOR=red
+            fi
+            BADGE="https://img.shields.io/badge/coverage-${PCT}%25-${COLOR}"
+          else
+            echo "coverage-summary.json not found; using 'unknown' fallback badge."
+            BADGE="https://img.shields.io/badge/coverage-unknown-lightgrey"
+          fi
+          if [ ! -f README.md ]; then echo "# ${GITHUB_REPOSITORY##*/}" > README.md; fi
+          if grep -q '<!-- coverage-badge -->' README.md; then
+            sed -i "s|<!-- coverage-badge -->.*<!-- /coverage-badge -->|<!-- coverage-badge -->![Coverage](${BADGE})<!-- /coverage-badge -->|" README.md
+          else
+            printf '<!-- coverage-badge -->![Coverage](%s)<!-- /coverage-badge -->\n\n%s\n' "$BADGE" "$(cat README.md)" > README.md
+          fi
+      - name: Commit coverage badge
+        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(ci): update coverage badge"
+          file_pattern: README.md
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-coverage
+          path: coverage
+          if-no-files-found: warn
+      - name: Upload HTML coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: |
+            coverage/**/*.html
+            coverage/**/*.css
+            coverage/**/*.js
+            coverage/**/*.png
+            coverage/favicon*
+          if-no-files-found: warn

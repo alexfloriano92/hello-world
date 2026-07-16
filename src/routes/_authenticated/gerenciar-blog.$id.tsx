@@ -45,7 +45,7 @@ function PostList({ storeId }: { storeId: string }) {
   const [creating, setCreating] = useState(false);
   const create = useMutation({
     mutationFn: () => saveFn({ data: { store_id: storeId, title: "Novo post", content: "" } }),
-    onSuccess: (row) => nav({ to: "/blog/$id/$postId", params: { id: storeId, postId: row.id } }),
+    onSuccess: (row) => nav({ to: "/gerenciar-blog/$id/$postId", params: { id: storeId, postId: row.id } }),
     onError: (e: Error) => toast.error(e.message),
   });
   const [slug, setSlug] = useState<string | null>(null);

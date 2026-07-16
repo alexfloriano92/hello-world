@@ -9,38 +9,372 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LojaSlugRouteImport } from './routes/loja.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthenticatedSuporteRouteImport } from './routes/_authenticated/suporte'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as BlogSlugPostSlugRouteImport } from './routes/blog.$slug.$postSlug'
+import { Route as AuthenticatedMembrosIdRouteImport } from './routes/_authenticated/membros.$id'
+import { Route as AuthenticatedIntegracoesIdRouteImport } from './routes/_authenticated/integracoes.$id'
+import { Route as AuthenticatedGerenciarIdRouteImport } from './routes/_authenticated/gerenciar.$id'
+import { Route as AuthenticatedDominioIdRouteImport } from './routes/_authenticated/dominio.$id'
+import { Route as AuthenticatedCrmIdRouteImport } from './routes/_authenticated/crm.$id'
+import { Route as AuthenticatedConviteTokenRouteImport } from './routes/_authenticated/convite.$token'
+import { Route as AuthenticatedBlogIdRouteImport } from './routes/_authenticated/blog.$id'
+import { Route as AuthenticatedBannersIdRouteImport } from './routes/_authenticated/banners.$id'
+import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
+import { Route as AuthenticatedAdminPagamentosRouteImport } from './routes/_authenticated/admin.pagamentos'
+import { Route as AuthenticatedAdminLojasRouteImport } from './routes/_authenticated/admin.lojas'
+import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
+import { Route as AuthenticatedAdminAssinaturasRouteImport } from './routes/_authenticated/admin.assinaturas'
+import { Route as ApiPublicFeedSlugRouteImport } from './routes/api/public/feed.$slug'
+import { Route as AuthenticatedBlogIdPostIdRouteImport } from './routes/_authenticated/blog.$id.$postId'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LojaSlugRoute = LojaSlugRouteImport.update({
+  id: '/loja/$slug',
+  path: '/loja/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedSuporteRoute = AuthenticatedSuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const BlogSlugPostSlugRoute = BlogSlugPostSlugRouteImport.update({
+  id: '/$postSlug',
+  path: '/$postSlug',
+  getParentRoute: () => BlogSlugRoute,
+} as any)
+const AuthenticatedMembrosIdRoute = AuthenticatedMembrosIdRouteImport.update({
+  id: '/membros/$id',
+  path: '/membros/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedIntegracoesIdRoute =
+  AuthenticatedIntegracoesIdRouteImport.update({
+    id: '/integracoes/$id',
+    path: '/integracoes/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGerenciarIdRoute =
+  AuthenticatedGerenciarIdRouteImport.update({
+    id: '/gerenciar/$id',
+    path: '/gerenciar/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDominioIdRoute = AuthenticatedDominioIdRouteImport.update({
+  id: '/dominio/$id',
+  path: '/dominio/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCrmIdRoute = AuthenticatedCrmIdRouteImport.update({
+  id: '/crm/$id',
+  path: '/crm/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedConviteTokenRoute =
+  AuthenticatedConviteTokenRouteImport.update({
+    id: '/convite/$token',
+    path: '/convite/$token',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBlogIdRoute = AuthenticatedBlogIdRouteImport.update({
+  id: '/blog/$id',
+  path: '/blog/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBannersIdRoute = AuthenticatedBannersIdRouteImport.update({
+  id: '/banners/$id',
+  path: '/banners/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminUsuariosRoute =
+  AuthenticatedAdminUsuariosRouteImport.update({
+    id: '/admin/usuarios',
+    path: '/admin/usuarios',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminPagamentosRoute =
+  AuthenticatedAdminPagamentosRouteImport.update({
+    id: '/admin/pagamentos',
+    path: '/admin/pagamentos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminLojasRoute = AuthenticatedAdminLojasRouteImport.update({
+  id: '/admin/lojas',
+  path: '/admin/lojas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminAuditoriaRoute =
+  AuthenticatedAdminAuditoriaRouteImport.update({
+    id: '/admin/auditoria',
+    path: '/admin/auditoria',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminAssinaturasRoute =
+  AuthenticatedAdminAssinaturasRouteImport.update({
+    id: '/admin/assinaturas',
+    path: '/admin/assinaturas',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const ApiPublicFeedSlugRoute = ApiPublicFeedSlugRouteImport.update({
+  id: '/api/public/feed/$slug',
+  path: '/api/public/feed/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedBlogIdPostIdRoute =
+  AuthenticatedBlogIdPostIdRouteImport.update({
+    id: '/$postId',
+    path: '/$postId',
+    getParentRoute: () => AuthenticatedBlogIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/suporte': typeof AuthenticatedSuporteRoute
+  '/blog/$slug': typeof BlogSlugRouteWithChildren
+  '/loja/$slug': typeof LojaSlugRoute
+  '/admin/assinaturas': typeof AuthenticatedAdminAssinaturasRoute
+  '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/lojas': typeof AuthenticatedAdminLojasRoute
+  '/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
+  '/banners/$id': typeof AuthenticatedBannersIdRoute
+  '/blog/$id': typeof AuthenticatedBlogIdRouteWithChildren
+  '/convite/$token': typeof AuthenticatedConviteTokenRoute
+  '/crm/$id': typeof AuthenticatedCrmIdRoute
+  '/dominio/$id': typeof AuthenticatedDominioIdRoute
+  '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
+  '/membros/$id': typeof AuthenticatedMembrosIdRoute
+  '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/suporte': typeof AuthenticatedSuporteRoute
+  '/blog/$slug': typeof BlogSlugRouteWithChildren
+  '/loja/$slug': typeof LojaSlugRoute
+  '/admin/assinaturas': typeof AuthenticatedAdminAssinaturasRoute
+  '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/lojas': typeof AuthenticatedAdminLojasRoute
+  '/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
+  '/banners/$id': typeof AuthenticatedBannersIdRoute
+  '/blog/$id': typeof AuthenticatedBlogIdRouteWithChildren
+  '/convite/$token': typeof AuthenticatedConviteTokenRoute
+  '/crm/$id': typeof AuthenticatedCrmIdRoute
+  '/dominio/$id': typeof AuthenticatedDominioIdRoute
+  '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
+  '/membros/$id': typeof AuthenticatedMembrosIdRoute
+  '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/suporte': typeof AuthenticatedSuporteRoute
+  '/blog/$slug': typeof BlogSlugRouteWithChildren
+  '/loja/$slug': typeof LojaSlugRoute
+  '/_authenticated/admin/assinaturas': typeof AuthenticatedAdminAssinaturasRoute
+  '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/_authenticated/admin/lojas': typeof AuthenticatedAdminLojasRoute
+  '/_authenticated/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
+  '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
+  '/_authenticated/banners/$id': typeof AuthenticatedBannersIdRoute
+  '/_authenticated/blog/$id': typeof AuthenticatedBlogIdRouteWithChildren
+  '/_authenticated/convite/$token': typeof AuthenticatedConviteTokenRoute
+  '/_authenticated/crm/$id': typeof AuthenticatedCrmIdRoute
+  '/_authenticated/dominio/$id': typeof AuthenticatedDominioIdRoute
+  '/_authenticated/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
+  '/_authenticated/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
+  '/_authenticated/membros/$id': typeof AuthenticatedMembrosIdRoute
+  '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/onboarding'
+    | '/suporte'
+    | '/blog/$slug'
+    | '/loja/$slug'
+    | '/admin/assinaturas'
+    | '/admin/auditoria'
+    | '/admin/lojas'
+    | '/admin/pagamentos'
+    | '/admin/usuarios'
+    | '/banners/$id'
+    | '/blog/$id'
+    | '/convite/$token'
+    | '/crm/$id'
+    | '/dominio/$id'
+    | '/gerenciar/$id'
+    | '/integracoes/$id'
+    | '/membros/$id'
+    | '/blog/$slug/$postSlug'
+    | '/admin/'
+    | '/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/onboarding'
+    | '/suporte'
+    | '/blog/$slug'
+    | '/loja/$slug'
+    | '/admin/assinaturas'
+    | '/admin/auditoria'
+    | '/admin/lojas'
+    | '/admin/pagamentos'
+    | '/admin/usuarios'
+    | '/banners/$id'
+    | '/blog/$id'
+    | '/convite/$token'
+    | '/crm/$id'
+    | '/dominio/$id'
+    | '/gerenciar/$id'
+    | '/integracoes/$id'
+    | '/membros/$id'
+    | '/blog/$slug/$postSlug'
+    | '/admin'
+    | '/blog/$id/$postId'
+    | '/api/public/feed/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/onboarding'
+    | '/_authenticated/suporte'
+    | '/blog/$slug'
+    | '/loja/$slug'
+    | '/_authenticated/admin/assinaturas'
+    | '/_authenticated/admin/auditoria'
+    | '/_authenticated/admin/lojas'
+    | '/_authenticated/admin/pagamentos'
+    | '/_authenticated/admin/usuarios'
+    | '/_authenticated/banners/$id'
+    | '/_authenticated/blog/$id'
+    | '/_authenticated/convite/$token'
+    | '/_authenticated/crm/$id'
+    | '/_authenticated/dominio/$id'
+    | '/_authenticated/gerenciar/$id'
+    | '/_authenticated/integracoes/$id'
+    | '/_authenticated/membros/$id'
+    | '/blog/$slug/$postSlug'
+    | '/_authenticated/admin/'
+    | '/_authenticated/blog/$id/$postId'
+    | '/api/public/feed/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  BlogSlugRoute: typeof BlogSlugRouteWithChildren
+  LojaSlugRoute: typeof LojaSlugRoute
+  ApiPublicFeedSlugRoute: typeof ApiPublicFeedSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +382,238 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/loja/$slug': {
+      id: '/loja/$slug'
+      path: '/loja/$slug'
+      fullPath: '/loja/$slug'
+      preLoaderRoute: typeof LojaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/suporte': {
+      id: '/_authenticated/suporte'
+      path: '/suporte'
+      fullPath: '/suporte'
+      preLoaderRoute: typeof AuthenticatedSuporteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/blog/$slug/$postSlug': {
+      id: '/blog/$slug/$postSlug'
+      path: '/$postSlug'
+      fullPath: '/blog/$slug/$postSlug'
+      preLoaderRoute: typeof BlogSlugPostSlugRouteImport
+      parentRoute: typeof BlogSlugRoute
+    }
+    '/_authenticated/membros/$id': {
+      id: '/_authenticated/membros/$id'
+      path: '/membros/$id'
+      fullPath: '/membros/$id'
+      preLoaderRoute: typeof AuthenticatedMembrosIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integracoes/$id': {
+      id: '/_authenticated/integracoes/$id'
+      path: '/integracoes/$id'
+      fullPath: '/integracoes/$id'
+      preLoaderRoute: typeof AuthenticatedIntegracoesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/gerenciar/$id': {
+      id: '/_authenticated/gerenciar/$id'
+      path: '/gerenciar/$id'
+      fullPath: '/gerenciar/$id'
+      preLoaderRoute: typeof AuthenticatedGerenciarIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dominio/$id': {
+      id: '/_authenticated/dominio/$id'
+      path: '/dominio/$id'
+      fullPath: '/dominio/$id'
+      preLoaderRoute: typeof AuthenticatedDominioIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/crm/$id': {
+      id: '/_authenticated/crm/$id'
+      path: '/crm/$id'
+      fullPath: '/crm/$id'
+      preLoaderRoute: typeof AuthenticatedCrmIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/convite/$token': {
+      id: '/_authenticated/convite/$token'
+      path: '/convite/$token'
+      fullPath: '/convite/$token'
+      preLoaderRoute: typeof AuthenticatedConviteTokenRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/blog/$id': {
+      id: '/_authenticated/blog/$id'
+      path: '/blog/$id'
+      fullPath: '/blog/$id'
+      preLoaderRoute: typeof AuthenticatedBlogIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/banners/$id': {
+      id: '/_authenticated/banners/$id'
+      path: '/banners/$id'
+      fullPath: '/banners/$id'
+      preLoaderRoute: typeof AuthenticatedBannersIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/usuarios': {
+      id: '/_authenticated/admin/usuarios'
+      path: '/admin/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/pagamentos': {
+      id: '/_authenticated/admin/pagamentos'
+      path: '/admin/pagamentos'
+      fullPath: '/admin/pagamentos'
+      preLoaderRoute: typeof AuthenticatedAdminPagamentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/lojas': {
+      id: '/_authenticated/admin/lojas'
+      path: '/admin/lojas'
+      fullPath: '/admin/lojas'
+      preLoaderRoute: typeof AuthenticatedAdminLojasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/auditoria': {
+      id: '/_authenticated/admin/auditoria'
+      path: '/admin/auditoria'
+      fullPath: '/admin/auditoria'
+      preLoaderRoute: typeof AuthenticatedAdminAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/assinaturas': {
+      id: '/_authenticated/admin/assinaturas'
+      path: '/admin/assinaturas'
+      fullPath: '/admin/assinaturas'
+      preLoaderRoute: typeof AuthenticatedAdminAssinaturasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/feed/$slug': {
+      id: '/api/public/feed/$slug'
+      path: '/api/public/feed/$slug'
+      fullPath: '/api/public/feed/$slug'
+      preLoaderRoute: typeof ApiPublicFeedSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/blog/$id/$postId': {
+      id: '/_authenticated/blog/$id/$postId'
+      path: '/$postId'
+      fullPath: '/blog/$id/$postId'
+      preLoaderRoute: typeof AuthenticatedBlogIdPostIdRouteImport
+      parentRoute: typeof AuthenticatedBlogIdRoute
+    }
   }
 }
 
+interface AuthenticatedBlogIdRouteChildren {
+  AuthenticatedBlogIdPostIdRoute: typeof AuthenticatedBlogIdPostIdRoute
+}
+
+const AuthenticatedBlogIdRouteChildren: AuthenticatedBlogIdRouteChildren = {
+  AuthenticatedBlogIdPostIdRoute: AuthenticatedBlogIdPostIdRoute,
+}
+
+const AuthenticatedBlogIdRouteWithChildren =
+  AuthenticatedBlogIdRoute._addFileChildren(AuthenticatedBlogIdRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedSuporteRoute: typeof AuthenticatedSuporteRoute
+  AuthenticatedAdminAssinaturasRoute: typeof AuthenticatedAdminAssinaturasRoute
+  AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
+  AuthenticatedAdminLojasRoute: typeof AuthenticatedAdminLojasRoute
+  AuthenticatedAdminPagamentosRoute: typeof AuthenticatedAdminPagamentosRoute
+  AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
+  AuthenticatedBannersIdRoute: typeof AuthenticatedBannersIdRoute
+  AuthenticatedBlogIdRoute: typeof AuthenticatedBlogIdRouteWithChildren
+  AuthenticatedConviteTokenRoute: typeof AuthenticatedConviteTokenRoute
+  AuthenticatedCrmIdRoute: typeof AuthenticatedCrmIdRoute
+  AuthenticatedDominioIdRoute: typeof AuthenticatedDominioIdRoute
+  AuthenticatedGerenciarIdRoute: typeof AuthenticatedGerenciarIdRoute
+  AuthenticatedIntegracoesIdRoute: typeof AuthenticatedIntegracoesIdRoute
+  AuthenticatedMembrosIdRoute: typeof AuthenticatedMembrosIdRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedSuporteRoute: AuthenticatedSuporteRoute,
+  AuthenticatedAdminAssinaturasRoute: AuthenticatedAdminAssinaturasRoute,
+  AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
+  AuthenticatedAdminLojasRoute: AuthenticatedAdminLojasRoute,
+  AuthenticatedAdminPagamentosRoute: AuthenticatedAdminPagamentosRoute,
+  AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
+  AuthenticatedBannersIdRoute: AuthenticatedBannersIdRoute,
+  AuthenticatedBlogIdRoute: AuthenticatedBlogIdRouteWithChildren,
+  AuthenticatedConviteTokenRoute: AuthenticatedConviteTokenRoute,
+  AuthenticatedCrmIdRoute: AuthenticatedCrmIdRoute,
+  AuthenticatedDominioIdRoute: AuthenticatedDominioIdRoute,
+  AuthenticatedGerenciarIdRoute: AuthenticatedGerenciarIdRoute,
+  AuthenticatedIntegracoesIdRoute: AuthenticatedIntegracoesIdRoute,
+  AuthenticatedMembrosIdRoute: AuthenticatedMembrosIdRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface BlogSlugRouteChildren {
+  BlogSlugPostSlugRoute: typeof BlogSlugPostSlugRoute
+}
+
+const BlogSlugRouteChildren: BlogSlugRouteChildren = {
+  BlogSlugPostSlugRoute: BlogSlugPostSlugRoute,
+}
+
+const BlogSlugRouteWithChildren = BlogSlugRoute._addFileChildren(
+  BlogSlugRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  BlogSlugRoute: BlogSlugRouteWithChildren,
+  LojaSlugRoute: LojaSlugRoute,
+  ApiPublicFeedSlugRoute: ApiPublicFeedSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

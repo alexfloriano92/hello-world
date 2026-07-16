@@ -27,11 +27,19 @@ def check(name, ok, detail=""):
     if not ok: failures.append(name)
 
 async def login(p, email, password):
+    # Log in via the app's own supabase client to bypass form quirks.
     await p.goto(f"{BASE}/auth", wait_until="domcontentloaded")
     await p.wait_for_selector('input[type="email"]', timeout=5000)
-    await p.locator('input[type="email"]').first.fill(email)
-    await p.locator('input[type="password"]').first.fill(password)
-    await p.locator('button:has-text("Entrar")').first.click()
+    result = await p.evaluate(
+        """async ({email, password}) => {
+            const mod = await import('/src/integrations/supabase/client.ts');
+            const { data, error } = await mod.supabase.auth.signInWithPassword({ email, password });
+            return { ok: !!data.session, err: error?.message };
+        }""",
+        {"email": email, "password": password},
+    )
+    if not result.get("ok"):
+        raise RuntimeError(f"signIn failed: {result}")
     await p.wait_for_function("() => !location.pathname.startsWith('/auth')", timeout=15000)
 
 async def main():

@@ -743,6 +743,7 @@ export type Database = {
           photos: Json
           price: number | null
           sold: boolean
+          status: string
           store_id: string
           title: string
           transmission: string | null
@@ -762,6 +763,7 @@ export type Database = {
           photos?: Json
           price?: number | null
           sold?: boolean
+          status?: string
           store_id: string
           title: string
           transmission?: string | null
@@ -781,6 +783,7 @@ export type Database = {
           photos?: Json
           price?: number | null
           sold?: boolean
+          status?: string
           store_id?: string
           title?: string
           transmission?: string | null

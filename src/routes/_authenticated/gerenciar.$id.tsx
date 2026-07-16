@@ -2,9 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft, Car, ExternalLink, Loader2, Plus, Save, Trash2, Upload, X, Star, CheckCircle2,
-  History, FileUp, Download, GripVertical,
+  History, FileUp, Download, GripVertical, Sparkles,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { generateStoreDesign } from "@/lib/generate-design.functions";
+import { encodeStyleTag, decodeStyleTag, VARIANT_DEFAULTS } from "@/lib/store-design";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
 import {
@@ -96,6 +98,42 @@ function Manage() {
     toast.success(next ? "Site publicado!" : "Site despublicado");
   };
 
+  const [regenerating, setRegenerating] = useState(false);
+  const regenerateDesign = async () => {
+    if (!store) return;
+    setRegenerating(true);
+    try {
+      const { style } = decodeStyleTag(store.style_tag);
+      const design = await generateStoreDesign({
+        data: {
+          storeName: store.name,
+          city: store.city ?? undefined,
+          styleHint: style || store.style_tag || undefined,
+          seedColor: store.primary_color ?? undefined,
+        },
+      });
+      const patch = {
+        primary_color: design.palette.primary,
+        secondary_color: design.palette.secondary,
+        accent_color: design.palette.accent,
+        neutral_color: design.palette.neutral,
+        font_display: design.fonts.display,
+        font_body: design.fonts.body,
+        style_tag: encodeStyleTag(design.layout_variant, style),
+      };
+      const { data, error } = await supabase.from("stores").update(patch).eq("id", store.id).select("*").maybeSingle();
+      if (error) throw error;
+      if (data) setStore(data as StoreRow);
+      toast.success(`Novo design aplicado: ${VARIANT_DEFAULTS[design.layout_variant].moodLabel}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao regenerar design");
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
+  const currentVariant = store ? decodeStyleTag(store.style_tag).variant : "default";
+
   const onVehicleSaved = (v: VehicleRow, isNew: boolean) => {
     setVehicles((prev) => isNew ? [v, ...prev] : prev.map((x) => x.id === v.id ? v : x));
   };
@@ -133,6 +171,15 @@ function Manage() {
             >
               Abrir site <ExternalLink className="h-3.5 w-3.5" />
             </a>
+            <button
+              onClick={regenerateDesign}
+              disabled={regenerating}
+              className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/20 disabled:opacity-60"
+              title={`Layout atual: ${VARIANT_DEFAULTS[currentVariant].moodLabel}`}
+            >
+              {regenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              {regenerating ? "Gerando…" : "Regenerar design com IA"}
+            </button>
             <button
               onClick={togglePublish}
               disabled={publishing}

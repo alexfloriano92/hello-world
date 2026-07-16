@@ -6,6 +6,8 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { extractPaletteFromFile, type Palette } from "@/lib/palette";
 import { generateStoreCopy, type GeneratedCopy } from "@/lib/generate-copy.functions";
+import { generateStoreDesign } from "@/lib/generate-design.functions";
+import { encodeStyleTag, type StoreDesign } from "@/lib/store-design";
 import { toast } from "sonner";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -151,17 +153,35 @@ function Onboarding() {
       const { data: existing } = await supabase.from("stores").select("id").eq("slug", finalSlug).maybeSingle();
       if (existing) finalSlug = `${finalSlug}-${Math.floor(Math.random() * 1000)}`;
 
+      // Design por IA: escolhe layout, paleta refinada e par tipografico.
+      // Ate 8s de espera; se falhar, cai no fallback deterministico do servidor.
+      let design: StoreDesign | null = null;
+      try {
+        design = await generateStoreDesign({
+          data: { storeName, city: undefined, styleHint: palette.style, seedColor: palette.primary },
+        });
+      } catch (err) {
+        console.error("generateStoreDesign failed at onboarding", err);
+      }
+
+      const finalPalette = design?.palette ?? palette;
+      const variant = design?.layout_variant ?? "default";
+
       const { error: insErr } = await supabase.from("stores").insert({
         owner_id: uid,
         name: storeName,
         slug: finalSlug,
         plan,
         logo_url: signed?.signedUrl ?? path,
-        primary_color: palette.primary,
-        secondary_color: palette.secondary,
-        accent_color: palette.accent,
-        neutral_color: palette.neutral,
-        style_tag: palette.style,
+        primary_color: finalPalette.primary,
+        secondary_color: finalPalette.secondary,
+        accent_color: finalPalette.accent,
+        neutral_color: finalPalette.neutral,
+        // Empacota "variant|estilo livre" dentro do proprio style_tag existente
+        // (assim funciona sem migration; layouts leem via decodeStyleTag).
+        style_tag: encodeStyleTag(variant, palette.style),
+        font_display: design?.fonts.display ?? null,
+        font_body: design?.fonts.body ?? null,
         onboarded: true,
         ...(copy ?? {}),
       } as any);

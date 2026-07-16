@@ -37,7 +37,7 @@ async def login(p, email, password):
         except Exception: continue
     else:
         await p.locator('form button[type="submit"]').first.click()
-    await p.wait_for_url(lambda u: "/auth" not in u, timeout=8000)
+    await p.wait_for_function("() => !location.pathname.startsWith(\"/auth\")", timeout=10000)
 
 async def main():
     async with async_playwright() as pw:

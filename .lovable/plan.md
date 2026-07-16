@@ -1,84 +1,79 @@
-# Plano: implementar as features dos planos
 
-Vou entregar em **4 fases**, do mais viável ao mais complexo. Cada fase é utilizável sozinha, então você pode aprovar tudo ou parar em qualquer ponto.
+## Objetivo
+A IA deixa de gerar apenas o copy da loja e passa a **compor um site inteiro sob medida**: layout, ritmo visual, paleta, tipografia, hero, micro-interações. Cada cliente recebe um site claramente diferente dos outros — sofisticado, moderno, com interação única.
 
-## Fase 1 — Base de gating por plano (fundação obrigatória)
-Sem isso, nenhuma feature abaixo consegue ser "só do Pro" ou "só do Premium".
+## Arquitetura da decisão de design
 
-- Função SQL `plan_has_feature(user_id, feature)` mapeando cada feature → planos permitidos.
-- Hook `usePlanFeature(feature)` no front para bloquear UI com upsell.
-- Middleware de server function `requirePlanFeature('x')` para bloquear no backend.
-- Badge "Disponível no Pro/Premium" nos itens bloqueados.
+Cada loja armazena um "briefing visual" resolvido no momento do onboarding (e regenerável depois):
 
-## Fase 2 — Features viáveis sem integrações externas
-Tudo roda dentro do Lovable Cloud, sem chaves de terceiros.
+- `layout_variant` — id do template arquitetônico (uma de 6 opções).
+- `design_meta` (jsonb) — hero_style, motion_intent, section_order, radius_scale, texture, tom.
+- `primary_color`, `secondary_color`, `accent_color`, `neutral_color` — paleta harmônica.
+- `font_display`, `font_body` — par tipográfico Google Fonts.
 
-1. **Domínio personalizado** (Start+)
-   - Campo `custom_domain` em `stores` + verificação DNS TXT.
-   - Página em `/gerenciar/$id/dominio` com instruções (A record → 185.158.133.1).
-   - Loader de `loja.$slug` aceita match por host além de slug.
+Nada é aleatório na hora do render: a IA escolhe uma vez, salvamos, e o site público carrega deterministicamente.
 
-2. **Múltiplos usuários por loja** (Pro+)
-   - Nova tabela `store_members(store_id, user_id, role)` com RLS.
-   - Tela de convites por e-mail, aceite via link mágico.
-   - Todas as políticas de `vehicles/leads` passam a considerar membership.
+## Os 6 layouts (arquiteturas distintas, não temas de cor)
 
-3. **Blog** (Pro+)
-   - Tabelas `posts(store_id, slug, title, content, cover, published_at)`.
-   - Editor rich text em `/gerenciar/$id/blog`.
-   - Rotas públicas `/loja/$slug/blog` e `/loja/$slug/blog/$postSlug`.
+Cada um é um componente completo diferente — hierarquia, seções, ritmo, comportamento — não só cores/fontes trocadas:
 
-4. **Chatbot IA** (Pro+)
-   - Server fn `chatWithStore` usando Lovable AI Gateway (grátis, sem chave).
-   - Contexto: dados da loja + estoque atual.
-   - Widget flutuante em `loja.$slug`.
+1. **Aurora** — noturno, glassmorphism, blobs de luz animados, nav flutuante em pílula, cards com brilho iridescente. Vibe: startup premium, tech.
+2. **Editorial** — capa de revista, serif oversized, numeração de seções, grid assimétrico 60/40, imagens sangrando. Vibe: marca de curadoria, boutique.
+3. **Monolith** — Swiss minimalista, tipografia gigante em preto/branco, captions em mono, grid rígido, uma única cor de destaque. Vibe: sério, direto, arquitetônico.
+4. **Showroom** — luxo escuro tipo BMW/Porsche, hero cinematográfico full-bleed, cards com spotlight ao hover, Bebas/Playfair. Vibe: premium tradicional.
+5. **Neo-Marché** — pop/tátil, bordas grossas, shadow offset, adesivos girados, cores saturadas. Vibe: revenda de bairro moderna, popular.
+6. **Concourse** — retrofuturista, terminal/mono, scanlines sutis, badges HUD, contagem de estoque tipo painel. Vibe: garagem esportiva, performance.
 
-5. **Banners automáticos** (Pro+)
-   - Server fn `generateBanner` usando `imagegen` (Lovable AI).
-   - Templates: "Chegou!", "Oferta", "Recém-chegados".
-   - Galeria em `/gerenciar/$id/banners` com download.
+Fallback: `default` (o layout atual, preservado para lojas antigas até re-gerarem).
 
-6. **CRM completo** (Premium)
-   - Extender `leads` com: `status` (novo/contato/negociação/fechado/perdido), `assigned_to`, `notes`, `next_followup`.
-   - Kanban board em `/gerenciar/$id/crm`.
-   - Histórico de interações por lead.
+## O que a IA faz
 
-7. **Suporte prioritário / Gerente de conta** (Pro/Premium)
-   - Tabela `support_tickets` com SLA por plano.
-   - Chat interno com admin, priorização por plano.
+Novo server fn `generateStoreDesign` — 1 chamada ao Lovable AI Gateway (google/gemini-3.5-flash) com output estruturado (`response_format: json_object`) e schema validado por Zod. Recebe nome da loja, cidade, tag de estilo e cor extraída do logo; devolve:
 
-## Fase 3 — Integrações que exigem chaves do usuário
-Cada uma pede credenciais do dono da loja (não do Lovable).
+```
+{
+  layout_variant: "aurora" | "editorial" | "monolith" | "showroom" | "neo-marche" | "concourse",
+  palette: { primary, secondary, accent, neutral },
+  fonts:   { display, body },   // pares Google Fonts curados
+  design_meta: {
+    hero_style: "cinematic" | "typographic" | "split" | "collage" | "hud",
+    motion:     "soft" | "sharp" | "playful" | "still",
+    section_order: ["hero","stock","about","contact"] | variações,
+    radius:     "sharp" | "soft" | "pill",
+    texture:    "none" | "grain" | "grid" | "scanlines",
+    tone_note:  string
+  }
+}
+```
 
-8. **WhatsApp integrado real** (hoje é só link `wa.me`)
-   - WhatsApp Business Cloud API: token + phone number ID por loja.
-   - Auto-resposta com IA + roteamento de leads.
+Prompt instrui a IA a **não repetir a combinação padrão do gênero** e a casar layout com o estilo do logo (ex.: logo vetorial minimalista → Monolith; logo com serifa → Editorial; logo tech → Aurora).
 
-9. **Instagram + Google Business** (Premium)
-   - Instagram Graph API (Meta): publicação automática de novos veículos.
-   - Google Business Profile API: sync de fotos + posts.
+Fallback determinístico por hash do nome quando a IA falhar — garantindo que mesmo sem crédito de IA, lojas diferentes ainda recebem layouts diferentes.
 
-10. **Facebook Marketplace** (Premium)
-    - Não tem API pública oficial. Alternativa: gerar feed XML que o vendedor sobe manualmente, ou usar Catalog API do Facebook (para anúncios pagos).
-    - **Recomendo trocar o texto** para "Feed para Marketplace" para não prometer o que a Meta não permite.
+## Ordem das entregas neste turno
 
-## Fase 4 — Integrações com portais de veículos
-Cada portal cobra à parte e exige contrato B2B.
+1. **Migração** `supabase/migrations/...store_ai_layouts.sql`: adiciona `layout_variant text`, `design_meta jsonb` em `stores` (grants preservados; leitura pública via política já existente).
+2. **`src/lib/store-design.ts`** — catálogo de variantes, paletas curadas, pares de fontes, helper `pickDesignDeterministic()`.
+3. **`src/lib/generate-design.functions.ts`** — server fn `generateStoreDesign` com validação Zod + fallback.
+4. **`src/components/store-layouts/`**
+   - `shared.tsx` — StockSection e ContactSection reaproveitáveis (extraídas do loja.$slug atual), header/footer building blocks.
+   - `aurora.tsx`, `editorial.tsx`, `monolith.tsx`, `showroom.tsx`, `neo-marche.tsx`, `concourse.tsx` — cada um um layout completo.
+   - `index.tsx` — `renderStoreLayout(variant, props)` faz o dispatch, com fallback para `default`.
+5. **`src/routes/loja.$slug.tsx`** — vira um shell fino: carrega fontes escolhidas via `head().links`, injeta CSS vars da paleta, delega ao layout escolhido.
+6. **Onboarding** (`_authenticated/onboarding.tsx`) — depois de `generateStoreCopy`, chama `generateStoreDesign` em paralelo; salva `layout_variant`, `design_meta`, `font_display`, `font_body` no insert.
+7. **Gerenciar loja** (`_authenticated/gerenciar.$id.tsx`) — botão "Regenerar design com IA" que roda `generateStoreDesign` e faz update; preview do variant atual.
+8. **QA**: typecheck + Playwright abrindo `/loja/<slug>` para cada variant via slug de teste, screenshots comparativos.
 
-11. **OLX / Webmotors / iCarros** (Premium)
-    - Gerar feed XML no padrão de cada portal em `/api/public/feed/$storeId/(olx|webmotors|icarros).xml`.
-    - Painel para o dono conectar a conta dele em cada portal e colar a URL do feed.
-    - Automação real (publicação direta) exige contratos B2B que **cada dono de loja precisa fechar** — não é algo que o SaaS pode fazer sozinho.
+## Detalhes técnicos
 
-12. **Automação completa** (Premium)
-    - Workflows: novo veículo → gera banner → publica Instagram → cria post no blog → notifica leads interessados.
-    - Motor de regras em cima do que foi feito nas fases 2–3.
+- **Fontes**: cada variant tem um par Google Fonts default; a IA escolhe entre pares pré-aprovados para não retornar fontes inexistentes. Injetadas por rota via `head().links` no `/loja/$slug` — sem `@import` remoto em `styles.css`.
+- **Motion**: CSS + `motion-safe:` utilities do Tailwind + pequenas animações declarativas. Sem novas dependências.
+- **RLS**: colunas novas herdam as políticas existentes em `stores` (anon SELECT quando `published=true`). Sem alterações de policy.
+- **Retrocompatibilidade**: lojas sem `layout_variant` renderizam o layout `default` (o design atual, preservado).
+- **`no_supabase` no sandbox**: a migração fica pronta como arquivo; você aplica no seu projeto Supabase externo. Todo o código nasce tolerante a `layout_variant`/`design_meta` ausentes.
 
-## Como quer prosseguir?
+## O que fica de fora deste turno (transparência)
 
-Sugiro aprovar **Fase 1 + Fase 2** de uma vez (é o maior salto de valor e não depende de nada externo). Fases 3 e 4 tratamos depois, feature por feature, porque cada uma exige decisões suas (qual conta de API usar, aceitar limitações da Meta etc.).
-
-Responda com:
-- **"vai fase 1 e 2"** → começo agora
-- **"só fase 1"** → entrego só a fundação e você decide o resto depois
-- **"quero X específico primeiro"** → priorizo o que você pedir
+- Editor "manual" de tokens de design (paleta/fontes/variant em formulário). O botão de regenerar por IA cobre 90% do caso; edição fina de tokens fica para um turno seguinte se você quiser.
+- A/B test entre layouts.
+- Preview em tempo real no dashboard (renderizar miniatura de cada variant).

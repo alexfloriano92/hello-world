@@ -23,10 +23,10 @@ import { Route as BlogSlugPostSlugRouteImport } from './routes/blog.$slug.$postS
 import { Route as AuthenticatedMembrosIdRouteImport } from './routes/_authenticated/membros.$id'
 import { Route as AuthenticatedIntegracoesIdRouteImport } from './routes/_authenticated/integracoes.$id'
 import { Route as AuthenticatedGerenciarIdRouteImport } from './routes/_authenticated/gerenciar.$id'
+import { Route as AuthenticatedGerenciarBlogIdRouteImport } from './routes/_authenticated/gerenciar-blog.$id'
 import { Route as AuthenticatedDominioIdRouteImport } from './routes/_authenticated/dominio.$id'
 import { Route as AuthenticatedCrmIdRouteImport } from './routes/_authenticated/crm.$id'
 import { Route as AuthenticatedConviteTokenRouteImport } from './routes/_authenticated/convite.$token'
-import { Route as AuthenticatedBlogIdRouteImport } from './routes/_authenticated/blog.$id'
 import { Route as AuthenticatedBannersIdRouteImport } from './routes/_authenticated/banners.$id'
 import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
 import { Route as AuthenticatedAdminPagamentosRouteImport } from './routes/_authenticated/admin.pagamentos'
@@ -34,7 +34,7 @@ import { Route as AuthenticatedAdminLojasRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin.auditoria'
 import { Route as AuthenticatedAdminAssinaturasRouteImport } from './routes/_authenticated/admin.assinaturas'
 import { Route as ApiPublicFeedSlugRouteImport } from './routes/api/public/feed.$slug'
-import { Route as AuthenticatedBlogIdPostIdRouteImport } from './routes/_authenticated/blog.$id.$postId'
+import { Route as AuthenticatedGerenciarBlogIdPostIdRouteImport } from './routes/_authenticated/gerenciar-blog.$id.$postId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -107,6 +107,12 @@ const AuthenticatedGerenciarIdRoute =
     path: '/gerenciar/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedGerenciarBlogIdRoute =
+  AuthenticatedGerenciarBlogIdRouteImport.update({
+    id: '/gerenciar-blog/$id',
+    path: '/gerenciar-blog/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDominioIdRoute = AuthenticatedDominioIdRouteImport.update({
   id: '/dominio/$id',
   path: '/dominio/$id',
@@ -123,11 +129,6 @@ const AuthenticatedConviteTokenRoute =
     path: '/convite/$token',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedBlogIdRoute = AuthenticatedBlogIdRouteImport.update({
-  id: '/blog/$id',
-  path: '/blog/$id',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedBannersIdRoute = AuthenticatedBannersIdRouteImport.update({
   id: '/banners/$id',
   path: '/banners/$id',
@@ -167,11 +168,11 @@ const ApiPublicFeedSlugRoute = ApiPublicFeedSlugRouteImport.update({
   path: '/api/public/feed/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedBlogIdPostIdRoute =
-  AuthenticatedBlogIdPostIdRouteImport.update({
+const AuthenticatedGerenciarBlogIdPostIdRoute =
+  AuthenticatedGerenciarBlogIdPostIdRouteImport.update({
     id: '/$postId',
     path: '/$postId',
-    getParentRoute: () => AuthenticatedBlogIdRoute,
+    getParentRoute: () => AuthenticatedGerenciarBlogIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -189,16 +190,16 @@ export interface FileRoutesByFullPath {
   '/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/banners/$id': typeof AuthenticatedBannersIdRoute
-  '/blog/$id': typeof AuthenticatedBlogIdRouteWithChildren
   '/convite/$token': typeof AuthenticatedConviteTokenRoute
   '/crm/$id': typeof AuthenticatedCrmIdRoute
   '/dominio/$id': typeof AuthenticatedDominioIdRoute
+  '/gerenciar-blog/$id': typeof AuthenticatedGerenciarBlogIdRouteWithChildren
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
   '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
-  '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/gerenciar-blog/$id/$postId': typeof AuthenticatedGerenciarBlogIdPostIdRoute
   '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesByTo {
@@ -216,16 +217,16 @@ export interface FileRoutesByTo {
   '/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/banners/$id': typeof AuthenticatedBannersIdRoute
-  '/blog/$id': typeof AuthenticatedBlogIdRouteWithChildren
   '/convite/$token': typeof AuthenticatedConviteTokenRoute
   '/crm/$id': typeof AuthenticatedCrmIdRoute
   '/dominio/$id': typeof AuthenticatedDominioIdRoute
+  '/gerenciar-blog/$id': typeof AuthenticatedGerenciarBlogIdRouteWithChildren
   '/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
   '/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
-  '/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/gerenciar-blog/$id/$postId': typeof AuthenticatedGerenciarBlogIdPostIdRoute
   '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRoutesById {
@@ -245,16 +246,16 @@ export interface FileRoutesById {
   '/_authenticated/admin/pagamentos': typeof AuthenticatedAdminPagamentosRoute
   '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/banners/$id': typeof AuthenticatedBannersIdRoute
-  '/_authenticated/blog/$id': typeof AuthenticatedBlogIdRouteWithChildren
   '/_authenticated/convite/$token': typeof AuthenticatedConviteTokenRoute
   '/_authenticated/crm/$id': typeof AuthenticatedCrmIdRoute
   '/_authenticated/dominio/$id': typeof AuthenticatedDominioIdRoute
+  '/_authenticated/gerenciar-blog/$id': typeof AuthenticatedGerenciarBlogIdRouteWithChildren
   '/_authenticated/gerenciar/$id': typeof AuthenticatedGerenciarIdRoute
   '/_authenticated/integracoes/$id': typeof AuthenticatedIntegracoesIdRoute
   '/_authenticated/membros/$id': typeof AuthenticatedMembrosIdRoute
   '/blog/$slug/$postSlug': typeof BlogSlugPostSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
-  '/_authenticated/blog/$id/$postId': typeof AuthenticatedBlogIdPostIdRoute
+  '/_authenticated/gerenciar-blog/$id/$postId': typeof AuthenticatedGerenciarBlogIdPostIdRoute
   '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
 }
 export interface FileRouteTypes {
@@ -274,16 +275,16 @@ export interface FileRouteTypes {
     | '/admin/pagamentos'
     | '/admin/usuarios'
     | '/banners/$id'
-    | '/blog/$id'
     | '/convite/$token'
     | '/crm/$id'
     | '/dominio/$id'
+    | '/gerenciar-blog/$id'
     | '/gerenciar/$id'
     | '/integracoes/$id'
     | '/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/admin/'
-    | '/blog/$id/$postId'
+    | '/gerenciar-blog/$id/$postId'
     | '/api/public/feed/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -301,16 +302,16 @@ export interface FileRouteTypes {
     | '/admin/pagamentos'
     | '/admin/usuarios'
     | '/banners/$id'
-    | '/blog/$id'
     | '/convite/$token'
     | '/crm/$id'
     | '/dominio/$id'
+    | '/gerenciar-blog/$id'
     | '/gerenciar/$id'
     | '/integracoes/$id'
     | '/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/admin'
-    | '/blog/$id/$postId'
+    | '/gerenciar-blog/$id/$postId'
     | '/api/public/feed/$slug'
   id:
     | '__root__'
@@ -329,16 +330,16 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/pagamentos'
     | '/_authenticated/admin/usuarios'
     | '/_authenticated/banners/$id'
-    | '/_authenticated/blog/$id'
     | '/_authenticated/convite/$token'
     | '/_authenticated/crm/$id'
     | '/_authenticated/dominio/$id'
+    | '/_authenticated/gerenciar-blog/$id'
     | '/_authenticated/gerenciar/$id'
     | '/_authenticated/integracoes/$id'
     | '/_authenticated/membros/$id'
     | '/blog/$slug/$postSlug'
     | '/_authenticated/admin/'
-    | '/_authenticated/blog/$id/$postId'
+    | '/_authenticated/gerenciar-blog/$id/$postId'
     | '/api/public/feed/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -452,6 +453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGerenciarIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/gerenciar-blog/$id': {
+      id: '/_authenticated/gerenciar-blog/$id'
+      path: '/gerenciar-blog/$id'
+      fullPath: '/gerenciar-blog/$id'
+      preLoaderRoute: typeof AuthenticatedGerenciarBlogIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dominio/$id': {
       id: '/_authenticated/dominio/$id'
       path: '/dominio/$id'
@@ -471,13 +479,6 @@ declare module '@tanstack/react-router' {
       path: '/convite/$token'
       fullPath: '/convite/$token'
       preLoaderRoute: typeof AuthenticatedConviteTokenRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/blog/$id': {
-      id: '/_authenticated/blog/$id'
-      path: '/blog/$id'
-      fullPath: '/blog/$id'
-      preLoaderRoute: typeof AuthenticatedBlogIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/banners/$id': {
@@ -529,26 +530,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicFeedSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/blog/$id/$postId': {
-      id: '/_authenticated/blog/$id/$postId'
+    '/_authenticated/gerenciar-blog/$id/$postId': {
+      id: '/_authenticated/gerenciar-blog/$id/$postId'
       path: '/$postId'
-      fullPath: '/blog/$id/$postId'
-      preLoaderRoute: typeof AuthenticatedBlogIdPostIdRouteImport
-      parentRoute: typeof AuthenticatedBlogIdRoute
+      fullPath: '/gerenciar-blog/$id/$postId'
+      preLoaderRoute: typeof AuthenticatedGerenciarBlogIdPostIdRouteImport
+      parentRoute: typeof AuthenticatedGerenciarBlogIdRoute
     }
   }
 }
 
-interface AuthenticatedBlogIdRouteChildren {
-  AuthenticatedBlogIdPostIdRoute: typeof AuthenticatedBlogIdPostIdRoute
+interface AuthenticatedGerenciarBlogIdRouteChildren {
+  AuthenticatedGerenciarBlogIdPostIdRoute: typeof AuthenticatedGerenciarBlogIdPostIdRoute
 }
 
-const AuthenticatedBlogIdRouteChildren: AuthenticatedBlogIdRouteChildren = {
-  AuthenticatedBlogIdPostIdRoute: AuthenticatedBlogIdPostIdRoute,
-}
+const AuthenticatedGerenciarBlogIdRouteChildren: AuthenticatedGerenciarBlogIdRouteChildren =
+  {
+    AuthenticatedGerenciarBlogIdPostIdRoute:
+      AuthenticatedGerenciarBlogIdPostIdRoute,
+  }
 
-const AuthenticatedBlogIdRouteWithChildren =
-  AuthenticatedBlogIdRoute._addFileChildren(AuthenticatedBlogIdRouteChildren)
+const AuthenticatedGerenciarBlogIdRouteWithChildren =
+  AuthenticatedGerenciarBlogIdRoute._addFileChildren(
+    AuthenticatedGerenciarBlogIdRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -560,10 +565,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminPagamentosRoute: typeof AuthenticatedAdminPagamentosRoute
   AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedBannersIdRoute: typeof AuthenticatedBannersIdRoute
-  AuthenticatedBlogIdRoute: typeof AuthenticatedBlogIdRouteWithChildren
   AuthenticatedConviteTokenRoute: typeof AuthenticatedConviteTokenRoute
   AuthenticatedCrmIdRoute: typeof AuthenticatedCrmIdRoute
   AuthenticatedDominioIdRoute: typeof AuthenticatedDominioIdRoute
+  AuthenticatedGerenciarBlogIdRoute: typeof AuthenticatedGerenciarBlogIdRouteWithChildren
   AuthenticatedGerenciarIdRoute: typeof AuthenticatedGerenciarIdRoute
   AuthenticatedIntegracoesIdRoute: typeof AuthenticatedIntegracoesIdRoute
   AuthenticatedMembrosIdRoute: typeof AuthenticatedMembrosIdRoute
@@ -580,10 +585,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminPagamentosRoute: AuthenticatedAdminPagamentosRoute,
   AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedBannersIdRoute: AuthenticatedBannersIdRoute,
-  AuthenticatedBlogIdRoute: AuthenticatedBlogIdRouteWithChildren,
   AuthenticatedConviteTokenRoute: AuthenticatedConviteTokenRoute,
   AuthenticatedCrmIdRoute: AuthenticatedCrmIdRoute,
   AuthenticatedDominioIdRoute: AuthenticatedDominioIdRoute,
+  AuthenticatedGerenciarBlogIdRoute:
+    AuthenticatedGerenciarBlogIdRouteWithChildren,
   AuthenticatedGerenciarIdRoute: AuthenticatedGerenciarIdRoute,
   AuthenticatedIntegracoesIdRoute: AuthenticatedIntegracoesIdRoute,
   AuthenticatedMembrosIdRoute: AuthenticatedMembrosIdRoute,

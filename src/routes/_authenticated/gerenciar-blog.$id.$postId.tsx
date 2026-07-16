@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Save, Eye } from "lucide-react";
 import { getPost, savePost } from "@/lib/blog.functions";
 
-export const Route = createFileRoute("/_authenticated/blog/$id/$postId")({
+export const Route = createFileRoute("/_authenticated/gerenciar-blog/$id/$postId")({
   head: () => ({ meta: [{ title: "Editar post" }, { name: "robots", content: "noindex" }] }),
   component: Editor,
 });
@@ -34,7 +34,7 @@ function Editor() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-surface/40 sticky top-0 z-10">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between gap-3 px-6">
-          <Link to="/blog/$id" params={{ id }} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Posts</Link>
+          <Link to="/gerenciar-blog/$id" params={{ id }} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Posts</Link>
           <div className="flex gap-2">
             <button onClick={() => save.mutate(false)} disabled={save.isPending} className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold hover:bg-surface"><Save className="h-4 w-4" /> Salvar rascunho</button>
             <button onClick={() => save.mutate(true)} disabled={save.isPending} className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Eye className="h-4 w-4" /> Publicar</button>

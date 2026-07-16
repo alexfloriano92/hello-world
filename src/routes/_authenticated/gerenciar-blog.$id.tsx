@@ -8,7 +8,7 @@ import { FeatureGate } from "@/components/FeatureGate";
 import { listMyPosts, savePost, deletePost } from "@/lib/blog.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/blog/$id")({
+export const Route = createFileRoute("/_authenticated/gerenciar-blog/$id")({
   head: () => ({ meta: [{ title: "Blog da loja" }, { name: "robots", content: "noindex" }] }),
   component: Page,
 });
@@ -67,7 +67,7 @@ function PostList({ storeId }: { storeId: string }) {
             {p.published_at && slug && (
               <a href={`/blog/${slug}/${p.slug}`} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground"><ExternalLink className="h-4 w-4" /></a>
             )}
-            <Link to="/blog/$id/$postId" params={{ id: storeId, postId: p.id }} className="text-sm text-primary hover:underline">Editar</Link>
+            <Link to="/gerenciar-blog/$id/$postId" params={{ id: storeId, postId: p.id }} className="text-sm text-primary hover:underline">Editar</Link>
             <button onClick={() => { if (confirm("Excluir post?")) delFn({ data: { id: p.id } }).then(() => qc.invalidateQueries({ queryKey: ["posts", storeId] })); }} className="text-destructive"><Trash2 className="h-4 w-4" /></button>
           </div>
         ))}

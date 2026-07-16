@@ -163,7 +163,7 @@ function Manage() {
           {[
             { href: `/dominio/${store.id}`, label: "Domínio", icon: "🌐" },
             { href: `/membros/${store.id}`, label: "Equipe", icon: "👥" },
-            { href: `/blog/${store.id}`, label: "Blog", icon: "📝" },
+            { href: `/gerenciar-blog/${store.id}`, label: "Blog", icon: "📝" },
             { href: `/banners/${store.id}`, label: "Banners IA", icon: "✨" },
             { href: `/crm/${store.id}`, label: "CRM", icon: "📊" },
             { href: `/integracoes/${store.id}`, label: "Integrações", icon: "🔌" },
